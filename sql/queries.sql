@@ -1,17 +1,16 @@
 -- Total spent per user, ordered by highest
--- Note: amount is stored as text with a '$' prefix, so we strip the symbol and cast to REAL to get correct numeric totals
+-- Note: Amount has '$' prefix and is stored as text, so we strip '$' and cast to REAL before aggregating
 SELECT 
-    transactions.client_id,
+    client_id,
     SUM(CAST(REPLACE(amount, '$', '') AS REAL)) AS total_spent
 FROM transactions
-LEFT JOIN users ON transactions.client_id = users.id
-GROUP BY transactions.client_id
+GROUP BY client_id
 ORDER BY total_spent DESC
 
 -- Total spent and transaction count across all users by month
 -- strftime('%Y-%m', date) extracts year and month from the date column
 SELECT 
-    trftime('%Y-%m', date) AS month,
+    strftime('%Y-%m', date) AS month,
     COUNT(*) AS number_transactions,
     SUM(CAST(REPLACE(amount, '$', '') AS REAL)) AS monthly_total
 FROM transactions
@@ -62,9 +61,9 @@ FROM transactions
 GROUP BY primary_error
 ORDER BY count DESC
 
--- Analyses fraud rate across different error combinations
--- Joins fraud_labels to transactions to calculate the percentage of confirmed fraud cases per error type
--- Findings: CVV errors show the highest fraud rate suggesting CVV failures are the strongest error indicator of fraudulent activity
+-- Analyses fraud rate across different error combinations.
+-- CVV errors show the highest fraud rate, suggesting they are the strongest error-based indicator of fraud.
+-- However, most fraud occurs on clean transactions, highlighting the limits of error-based detection alone.
 
 SELECT 
     transactions.errors,
@@ -137,3 +136,46 @@ LEFT JOIN fraud_per_user ON monthly_spending.client_id = fraud_per_user.client_i
 CROSS JOIN total_months
 GROUP BY monthly_spending.client_id
 ORDER BY (SUM(monthly_spending.monthly_spending) / total_months.num_months) / (CAST(REPLACE(users.yearly_income, '$', '') AS REAL) / 12.0) DESC
+
+-- Running total spend per user over time, ordered chronologically.
+-- Date sorting works correctly here as the YYYY-MM-DD format is both alphabetically and chronologically ordered.
+SELECT 
+    client_id,
+    date,
+    CAST(REPLACE(amount, '$', '') AS REAL) AS amount,
+    SUM(CAST(REPLACE(amount, '$', '') AS REAL)) OVER (PARTITION BY client_id ORDER BY date) AS running_total
+FROM transactions
+
+-- Ranks users by total spend
+-- Uses a CTE to first aggregate total spend per user, then applies the window function on top of that result.
+WITH total_spent AS (
+    SELECT 
+        client_id,
+        SUM(CAST(REPLACE(amount, '$', '') AS REAL)) AS total_spent
+    FROM transactions
+    GROUP BY client_id
+)
+SELECT
+    client_id,
+    total_spent,
+    RANK() OVER (ORDER BY total_spent DESC) AS spend_rank
+FROM total_spent
+
+-- Month-on-month spending change per user using LAG() to reference the previous row.
+-- PARTITION BY client_id ensures each user's history is treated independently.
+-- Note: gaps in transaction history are skipped rather than filled with zero, so prev_month_spending may not always be the immediately preceding calendar month.
+WITH monthly_spending AS (
+    SELECT 
+        client_id,
+        strftime('%Y-%m', date) AS month,
+        SUM(CAST(REPLACE(amount, '$', '') AS REAL)) AS monthly_spending
+    FROM transactions
+    GROUP BY client_id, month
+)
+SELECT
+    client_id,
+    month,
+    monthly_spending,
+    LAG(monthly_spending) OVER (PARTITION BY client_id ORDER BY month) AS prev_month_spending,
+    ROUND(monthly_spending - LAG(monthly_spending) OVER (PARTITION BY client_id ORDER BY month), 2) AS month_on_month_change
+FROM monthly_spending
