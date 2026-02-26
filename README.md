@@ -10,3 +10,8 @@ A data analytics project with three aims:
 - Dataset sourced from the [Financial Transactions Dataset](https://www.kaggle.com/datasets/computingvictor/transactions-fraud-datasets) on Kaggle
 - SQLite database built from raw CSVs using `setup_db.py`
 - SQL queries written and documented in `sql/queries.sql`
+- 3/4 pages of Streamlit Dashboard completed
+
+To Do:
+- Create Error/Fraud Detection Dashboard page
+- Record Video going through Dashboard
