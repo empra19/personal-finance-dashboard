@@ -6,21 +6,12 @@ An interactive financial analytics dashboard exploring 13 million transactions a
 
 ## Dashboard Pages
 
-**Spending Overview**
-
-High-level summary of total spend, transaction volume, and monthly trends with 3-month and 12-month moving averages.
-
-**Spending by Category**
-
-Breakdown of the top merchant categories by transaction volume and average transaction size, with historical spending trends per category.
-
-**Error & Fraud Analysis**
-
-Examines transaction error types, their fraud rates, and which merchant categories are most affected by fraud.
-
-**Forecasting**
-
-Time series forecasting using SARIMA, trained on 2010–2018 data and validated against 2019 (MAPE: 0.65%). Includes a 12-month forward forecast and an interactive category-level forecast dropdown.
+| Page | Description |
+|---|---|
+| **Spending Overview** | Total spend, transaction volume, and monthly trends with 3-month and 12-month moving averages |
+| **Spending by Category** | Top merchant categories by transaction volume and average transaction size, with historical spending trends |
+| **Error & Fraud Analysis** | Transaction error types, their fraud rates, and which merchant categories are most affected by fraud |
+| **Forecasting** | SARIMA time series forecasting trained on 2010–2018 data, validated against 2019 (MAPE: 0.65%), with a category-level forecast dropdown |
 
 ---
 
