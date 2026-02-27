@@ -15,6 +15,18 @@ An interactive financial analytics dashboard exploring 13 million transactions a
 
 ---
 
+## Screenshots
+
+![Spending Overview](screenshots/spending_overview.png)
+
+![Spending by Category](screenshots/spending_by_category.png)
+
+![Error & Fraud Analysis](screenshots/error_fraud_analysis.png)
+
+![Forecasting](screenshots/forecasting.png)
+
+---
+
 ## Technical Stack
 
 - **Python** - Pandas, Statsmodels, Scikit-learn, Plotly, Streamlit
