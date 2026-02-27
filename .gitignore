@@ -1,2 +1,5 @@
 data/
+!data/fraud_by_error.csv
+!data/fraud_over_time.csv
+!data/fraud_amounts.csv
 sql/individual_queries
