@@ -14,6 +14,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.markdown("<h1 style='text-align: center;'>Spending by Category</h1>", unsafe_allow_html=True)
 st.markdown("<h5 style='text-align: center;'>Breakdown of transaction volume and spend across merchant categories.</h5>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: grey;'>by Yasith Senanayake</p>", unsafe_allow_html=True)
 
 @st.cache_data
 def load_top_by_volume():

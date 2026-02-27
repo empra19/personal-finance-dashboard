@@ -16,7 +16,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.markdown("<h1 style='text-align: center;'>Forecasting</h1>", unsafe_allow_html=True)
 st.markdown("<h5 style='text-align: center;'>Time series forecasting using SARIMA - trained on 2010–2018 spending data, validated against 2019, and projected 12 months ahead.</h5>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: grey;'>Yasith Senanayake</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: grey;'>by Yasith Senanayake</p>", unsafe_allow_html=True)
 
 
 @st.cache_data
@@ -60,7 +60,7 @@ mae, mape, eval_mean = fit_eval_model()
 result, df = fit_overall_model()
 
 # ── Train/Test Chart ───────────────────────────────────────────────────────────
-st.subheader('Model Validation - Forecast vs Actual (2019)')
+st.subheader('Model Validation: Forecast vs Actual (2019)')
 
 fig_eval = go.Figure()
 fig_eval.add_trace(go.Scatter(
@@ -82,7 +82,7 @@ fig_eval.add_trace(go.Scatter(
     showlegend=False
 ))
 fig_eval.update_layout(
-    xaxis_title='Month',
+    xaxis_title='Date',
     yaxis_title='Total Spent',
     yaxis_tickformat='.2s',
     yaxis_tickprefix='$',
@@ -142,7 +142,7 @@ fig_future.add_trace(go.Scatter(
     name='95% Confidence Interval'
 ))
 fig_future.update_layout(
-    xaxis_title='Month',
+    xaxis_title='Date',
     yaxis_title='Total Spend',
     yaxis_tickformat='.2s',
     yaxis_tickprefix='$',
@@ -240,7 +240,7 @@ fig_cat.add_trace(go.Scatter(
     showlegend=False
 ))
 fig_cat.update_layout(
-    xaxis_title='Month',
+    xaxis_title='Date',
     yaxis_title='Total Spend',
     yaxis_tickformat='.2s',
     yaxis_tickprefix='$',
