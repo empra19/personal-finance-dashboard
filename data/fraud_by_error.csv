@@ -1,0 +1,8 @@
+errors,total_transactions,fraud_count,fraud_rate
+Bad CVV,6106,139,2.28
+Bad Expiration,6161,54,0.88
+Bad Card Number,7767,59,0.76
+Bad PIN,32119,112,0.35
+Insufficient Balance,130902,169,0.13
+Technical Glitch,26271,31,0.12
+Bad Zipcode,1126,0,0.0
